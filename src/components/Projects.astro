@@ -1,0 +1,138 @@
+---
+const projects = [
+  {
+    number: "01",
+    category: "IoT & Hardware",
+    title: "BLYK.OS",
+    description: "App BLE para cerradura inteligente vía ESP32. Control remoto, gestión de accesos y monitoreo en tiempo real.",
+    stack: ["Flutter", "ESP32", "BLE"],
+    images: ["/blyk-1.png", "/blyk-2.png", "/blyk-3.png"],
+    link: "https://blykos-doc.netlify.app/"
+  },
+  {
+    number: "02",
+    category: "Developer Tools",
+    title: "CRONUX-CRX",
+    description: "Controlador de versiones minimalista con CLI y UI. Simple para usuarios técnicos y no técnicos.",
+    stack: ["Python", "Flet", "CLI"],
+    image: "/cronuxweb.png",
+    link: "https://eleodevv.github.io/cronux/"
+  },
+  {
+    number: "03",
+    category: "Mobile Apps",
+    title: "MELLY+",
+    description: "App simple para registrar glucosa en desayuno, comida y cena, dos horas antes y después. Enfocada para personas mayores.",
+    stack: ["Expo", "React Native", "SQLite"],
+    images: ["/melly-1.png", "/melly-2.png", "/melly-3.png"],
+    link: "https://github.com/eleodevv/Melly-plus"
+  },
+  {
+    number: "04",
+    category: "Web & AI",
+    title: "Echoa",
+    description: "Detección de canciones mediante IA con catálogo de reconocimiento musical en tiempo real.",
+    stack: ["HTML", "CSS", "JavaScript", "TensorFlow", "Python"],
+    image: "/echoa.png",
+    link: "https://echoa-app.netlify.app/"
+  },
+  {
+    number: "05",
+    category: "Web & Gaming",
+    title: "Nexu",
+    description: "Juego de mesa físico con cartas + app web para aprender componentes electrónicos de forma interactiva.",
+    stack: ["React", "Web App", "Game Design"],
+    image: "/nexu.png",
+    link: "https://nuxt-oficial.netlify.app/"
+  },
+  {
+    number: "06",
+    category: "Freelance",
+    title: "Sistema de Nómina",
+    description: "App web para cálculo automatizado de nómina empresarial con reportes y gestión de empleados.",
+    stack: ["JavaScript", "Vite", "Web App"],
+    image: "/nomina.png",
+    link: "https://silly-semolina-a61860.netlify.app/"
+  }
+];
+---
+
+<section id="proyectos" class="projects-clean">
+  <div class="container">
+    <div class="clean-header">
+      <h2>Proyectos seleccionados</h2>
+    </div>
+    
+    <div class="clean-grid">
+      {projects.map((project, index) => (
+        <article class="clean-card" data-reverse={index % 2 === 1 ? "true" : "false"} data-project={project.number}>
+          <div class="clean-image" data-project-img={project.number}>
+            {project.images ? (
+              <div class="fan-wrapper">
+                <div class="fan-container">
+                  <img 
+                    src={project.images[1]} 
+                    alt={`${project.title} izquierda`} 
+                    class="fan-img fan-left"
+                  />
+                  <img 
+                    src={project.images[0]} 
+                    alt={`${project.title} centro`} 
+                    class="fan-img fan-center active"
+                  />
+                  <img 
+                    src={project.images[2]} 
+                    alt={`${project.title} derecha`} 
+                    class="fan-img fan-right"
+                  />
+                </div>
+              </div>
+            ) : (
+              project.link ? (
+                <a href={project.link} target="_blank" rel="noopener noreferrer" class="project-image-link">
+                  <img src={project.image} alt={project.title} />
+                </a>
+              ) : (
+                <img src={project.image} alt={project.title} />
+              )
+            )}
+          </div>
+          <div class="clean-info">
+            <div class="clean-meta">
+              <span class="clean-number">{project.number}</span>
+              <span class="clean-category">{project.category}</span>
+            </div>
+            <h3>{project.title}</h3>
+            <p>{project.description}</p>
+            <div class="clean-tags">
+              {project.stack.map(tech => (
+                <span>{tech}</span>
+              ))}
+            </div>
+            <a href={project.link || "#"} class="clean-link" target={project.link ? "_blank" : "_self"} rel={project.link ? "noopener noreferrer" : ""}>
+              Ver proyecto
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  // Fan hover effect only - no image switching or auto-rotation
+  function initFanControls() {
+    // No JavaScript needed - pure CSS hover effect
+    console.log('Fan effect initialized - hover only');
+  }
+  
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initFanControls);
+  } else {
+    initFanControls();
+  }
+</script>

@@ -1,0 +1,187 @@
+---
+---
+
+<nav class="nav">
+  <div class="nav-content">
+    <div class="nav-logo">
+      Eleomar Callejas
+    </div>
+    
+    <button class="nav-hamburger" aria-label="Menú">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    
+    <div class="nav-links">
+      <a href="#inicio" class="nav-link">Inicio</a>
+      <a href="#proyectos" class="nav-link">Proyectos</a>
+      <a href="#sobre-mi" class="nav-link">Sobre mí</a>
+      <a href="#contacto" class="nav-cta">Trabajemos juntos</a>
+      
+      <div class="theme-switcher">
+        <button class="theme-btn" data-theme="light" aria-label="Tema claro">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+          </svg>
+        </button>
+        <button class="theme-btn" data-theme="dark" aria-label="Tema oscuro">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+        <button class="theme-btn" data-theme="system" aria-label="Tema del sistema">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+            <line x1="8" y1="21" x2="16" y2="21"/>
+            <line x1="12" y1="17" x2="12" y2="21"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<script>
+  // Theme switcher functionality
+  function initTheme() {
+    const themeButtons = document.querySelectorAll('.theme-btn');
+    const savedTheme = localStorage.getItem('theme') || 'system';
+    
+    function applyTheme(theme: string) {
+      if (theme === 'system') {
+        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', systemTheme);
+      } else {
+        document.documentElement.setAttribute('data-theme', theme);
+      }
+      
+      // Update active button
+      themeButtons.forEach(btn => {
+        const button = btn;
+        button.classList.toggle('active', button.getAttribute('data-theme') === theme);
+      });
+      
+      localStorage.setItem('theme', theme);
+    }
+    
+    // Initialize theme
+    applyTheme(savedTheme);
+    
+    // Theme button listeners
+    themeButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const theme = button.getAttribute('data-theme');
+        if (theme) {
+          applyTheme(theme);
+        }
+      });
+    });
+    
+    // System theme change listener
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+      const currentTheme = localStorage.getItem('theme');
+      if (currentTheme === 'system') {
+        applyTheme('system');
+      }
+    });
+  }
+  
+  // Smooth scroll for navigation links
+  function initSmoothScroll() {
+    document.querySelectorAll('.nav-links a[href^="#"]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const href = link.getAttribute('href');
+        if (href) {
+          const target = document.querySelector(href);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Close mobile menu if open
+            const navLinks = document.querySelector('.nav-links');
+            if (navLinks) {
+              navLinks.classList.remove('active');
+            }
+          }
+        }
+      });
+    });
+  }
+  
+  // Mobile menu toggle
+  function initMobileMenu() {
+    const hamburger = document.querySelector('.nav-hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (hamburger && navLinks) {
+      hamburger.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        hamburger.classList.toggle('active');
+      });
+      
+      // Close menu when clicking on a link
+      const links = navLinks.querySelectorAll('a');
+      links.forEach(link => {
+        link.addEventListener('click', () => {
+          navLinks.classList.remove('active');
+          hamburger.classList.remove('active');
+        });
+      });
+      
+      // Close menu when clicking outside
+      document.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        if (!target.closest('.nav-content')) {
+          navLinks.classList.remove('active');
+          hamburger.classList.remove('active');
+        }
+      });
+    }
+  }
+  
+  // Active section indicator
+  function initActiveSection() {
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    function updateActiveLink() {
+      let currentSection = '';
+      
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        
+        if (window.scrollY >= sectionTop - 100) {
+          currentSection = section.getAttribute('id') || '';
+        }
+      });
+      
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        const href = link.getAttribute('href');
+        if (href === `#${currentSection}`) {
+          link.classList.add('active');
+        }
+      });
+    }
+    
+    window.addEventListener('scroll', updateActiveLink);
+    updateActiveLink(); // Initial call
+  }
+  
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      initTheme();
+      initSmoothScroll();
+      initMobileMenu();
+      initActiveSection();
+    });
+  } else {
+    initTheme();
+    initSmoothScroll();
+    initMobileMenu();
+    initActiveSection();
+  }
+</script>
